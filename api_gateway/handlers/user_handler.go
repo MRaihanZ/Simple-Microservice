@@ -1,14 +1,17 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/MRaihanZ/Simple-Microservice/clients"
 	"github.com/gin-gonic/gin"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
 func GetUsersHandler(c *gin.Context) {
+	fmt.Println("Connecting...")
 	conn, client := clients.ConnectUserService()
-
+	fmt.Println("Connected")
 	response := clients.GetUsers(conn, client)
 	result, err := protojson.Marshal(response)
 	if err != nil {
