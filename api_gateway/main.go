@@ -1,12 +1,16 @@
 package main
 
 import (
+	"github.com/MRaihanZ/Simple-Microservice/handlers/user_handler"
+
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	//inisialiasai Gin
 	router := gin.Default()
+
+	router.GET("/api/v1/users", user_handler.GetUsers())
 
 	//membuat route dengan method GET
 	router.GET("/api/v1/users/:id", func(c *gin.Context) {
@@ -15,17 +19,6 @@ func main() {
 		//return response JSON
 		c.JSON(200, gin.H{
 			"message": "Hello World!" + id,
-		})
-	})
-
-	router.GET("/api/v1/users/:id/", func(c *gin.Context) {
-		id := c.Param("id")
-		start := c.Query("start")
-		end := c.Query("end")
-
-		//return response JSON
-		c.JSON(200, gin.H{
-			"message": "Hello World!" + id + " | " + start + " | " + end,
 		})
 	})
 
