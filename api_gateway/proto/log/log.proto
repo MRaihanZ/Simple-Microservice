@@ -1,0 +1,24 @@
+syntax = "proto3";
+package log;
+
+message Log {
+    int32 id = 1;
+    string message = 2;
+    string created_at = 3;
+}
+
+message Response {
+    int32 code = 1;
+    repeated Log body = 2;
+}
+
+message Empty {}
+
+message LogId {
+    int32 id = 1;
+}
+
+service LogService {
+    rpc GetLogs (Empty) returns (Response) {}
+    rpc GetLogById (LogId) returns (Response) {}
+}
