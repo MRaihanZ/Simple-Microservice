@@ -19,16 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	LogService_GetLogs_FullMethodName    = "/log.LogService/GetLogs"
-	LogService_GetLogById_FullMethodName = "/log.LogService/GetLogById"
+	LogService_CreateLog_FullMethodName = "/log.LogService/CreateLog"
 )
 
 // LogServiceClient is the client API for LogService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type LogServiceClient interface {
-	GetLogs(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Response, error)
-	GetLogById(ctx context.Context, in *LogId, opts ...grpc.CallOption) (*Response, error)
+	CreateLog(ctx context.Context, in *Log, opts ...grpc.CallOption) (*Response, error)
 }
 
 type logServiceClient struct {
@@ -39,20 +37,10 @@ func NewLogServiceClient(cc grpc.ClientConnInterface) LogServiceClient {
 	return &logServiceClient{cc}
 }
 
-func (c *logServiceClient) GetLogs(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Response, error) {
+func (c *logServiceClient) CreateLog(ctx context.Context, in *Log, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Response)
-	err := c.cc.Invoke(ctx, LogService_GetLogs_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *logServiceClient) GetLogById(ctx context.Context, in *LogId, opts ...grpc.CallOption) (*Response, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
-	err := c.cc.Invoke(ctx, LogService_GetLogById_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, LogService_CreateLog_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -63,8 +51,7 @@ func (c *logServiceClient) GetLogById(ctx context.Context, in *LogId, opts ...gr
 // All implementations must embed UnimplementedLogServiceServer
 // for forward compatibility.
 type LogServiceServer interface {
-	GetLogs(context.Context, *Empty) (*Response, error)
-	GetLogById(context.Context, *LogId) (*Response, error)
+	CreateLog(context.Context, *Log) (*Response, error)
 	mustEmbedUnimplementedLogServiceServer()
 }
 
@@ -75,11 +62,8 @@ type LogServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedLogServiceServer struct{}
 
-func (UnimplementedLogServiceServer) GetLogs(context.Context, *Empty) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetLogs not implemented")
-}
-func (UnimplementedLogServiceServer) GetLogById(context.Context, *LogId) (*Response, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetLogById not implemented")
+func (UnimplementedLogServiceServer) CreateLog(context.Context, *Log) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateLog not implemented")
 }
 func (UnimplementedLogServiceServer) mustEmbedUnimplementedLogServiceServer() {}
 func (UnimplementedLogServiceServer) testEmbeddedByValue()                    {}
@@ -102,38 +86,20 @@ func RegisterLogServiceServer(s grpc.ServiceRegistrar, srv LogServiceServer) {
 	s.RegisterService(&LogService_ServiceDesc, srv)
 }
 
-func _LogService_GetLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
+func _LogService_CreateLog_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Log)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(LogServiceServer).GetLogs(ctx, in)
+		return srv.(LogServiceServer).CreateLog(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: LogService_GetLogs_FullMethodName,
+		FullMethod: LogService_CreateLog_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogServiceServer).GetLogs(ctx, req.(*Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _LogService_GetLogById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogId)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LogServiceServer).GetLogById(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: LogService_GetLogById_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogServiceServer).GetLogById(ctx, req.(*LogId))
+		return srv.(LogServiceServer).CreateLog(ctx, req.(*Log))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -146,12 +112,8 @@ var LogService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*LogServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetLogs",
-			Handler:    _LogService_GetLogs_Handler,
-		},
-		{
-			MethodName: "GetLogById",
-			Handler:    _LogService_GetLogById_Handler,
+			MethodName: "CreateLog",
+			Handler:    _LogService_CreateLog_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

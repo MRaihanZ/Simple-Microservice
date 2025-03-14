@@ -22,4 +22,5 @@ message LogId {
 service LogService {
     rpc GetLogs (Empty) returns (Response) {}
     rpc GetLogById (LogId) returns (Response) {}
+    rpc CreateLog (Log) returns (Response) {}
 }
