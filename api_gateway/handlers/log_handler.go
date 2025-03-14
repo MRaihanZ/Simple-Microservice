@@ -2,7 +2,7 @@ package handlers
 
 import "github.com/gin-gonic/gin"
 
-func GetLogs(c *gin.Context) {
+func GetLogsHandler(c *gin.Context) {
 	id := c.Param("id")
 
 	//return response JSON

@@ -7,18 +7,15 @@ import (
 )
 
 func main() {
-	//inisialiasai Gin
 	router := gin.Default()
 
-	router.GET("/api/v1/users", handlers.GetUsers)
+	router.GET("/api/v1/users", handlers.GetUsersHandler)
 
-	//membuat route dengan method GET
-	router.GET("/api/v1/users/:id", handlers.GetUser)
+	// router.GET("/api/v1/users/:id", handlers.GetUserHandler)
 
-	router.POST("/api/v1/users", handlers.CreateUser)
+	// router.POST("/api/v1/users", handlers.CreateUserHandler)
 
-	router.GET("/api/v1/logs", handlers.GetLogs)
+	router.GET("/api/v1/logs", handlers.GetLogsHandler)
 
-	//mulai server dengan port 3000
 	router.Run(":3000")
 }

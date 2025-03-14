@@ -1,30 +1,42 @@
 package handlers
 
 import (
+	"github.com/MRaihanZ/Simple-Microservice/clients"
 	"github.com/gin-gonic/gin"
+	"google.golang.org/protobuf/encoding/protojson"
 )
 
-func GetUsers(c *gin.Context) {
+func GetUsersHandler(c *gin.Context) {
+	conn, client := clients.ConnectUserService()
 
+	response := clients.GetUsers(conn, client)
+	result, err := protojson.Marshal(response)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Failed to serialize response"})
+		return
+	}
 	//return response JSON
-	c.JSON(200, gin.H{
-		"message": "Hello World!",
-	})
+	c.Data(200, "application/json", result)
 }
 
-func GetUser(c *gin.Context) {
-	id := c.Param("id")
+// func GetUserHandler(c *gin.Context) {
+// 	id := c.Param("id")
 
-	//return response JSON
-	c.JSON(200, gin.H{
-		"message": "Hello World!" + id,
-	})
-}
+// 	//return response JSON
+// 	c.JSON(200, gin.H{
+// 		"message": "Hello World!" + id,
+// 	})
+// }
 
-func CreateUser(c *gin.Context) {
+// func CreateUserHandler(c *gin.Context) {
+// 	name := c.PostForm("name")
+// 	email := c.PostForm("email")
+// 	password := c.PostForm("password")
 
-	//return response JSON
-	c.JSON(200, gin.H{
-		"message": "Hello World!",
-	})
-}
+// 	conn, client := clients.ConnectUserService()
+
+// 	//return response JSON
+// 	c.JSON(200, gin.H{
+// 		"message": "Hello World! POST",
+// 	})
+// }
