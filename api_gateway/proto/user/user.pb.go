@@ -4,7 +4,7 @@
 // 	protoc        v3.21.12
 // source: user.proto
 
-package __
+package user
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
